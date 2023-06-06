@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	  <TargetFrameworks>netcoreapp3.1;net5.0;</TargetFrameworks>
+	  <Configurations>Debug;Release</Configurations>
+	  <AssemblyName>Arad.SMS.Core.DotNetSDK</AssemblyName>
+	  <RootNamespace>Arad.SMS.Core.DotNetSDK</RootNamespace>
+  </PropertyGroup>
+	<PropertyGroup>
+		<Title>Arad.SMS.Core.DotNetSDK Client library for sending sms via API</Title>
+		<Company>Arad ITC</Company>
+		<Description>.NET implementation of Arad SMS Core API. This library can help to communicate with Arad SMS Core API, send and receive SMS messages.</Description>
+		<Copyright>Copyright (c) 2023 Arad ITC</Copyright>
+		<AssemblyTitle>Arad.SMS.Core.DotNetSDK</AssemblyTitle>
+		<Authors>Ammar Heidari</Authors>
+		<PackageTags>API SMS Rest SendSMS</PackageTags>
+		<PackageProjectUrl>https://aradvas.ir/</PackageProjectUrl>
+	</PropertyGroup>
+	<ItemGroup>
+	  <PackageReference Include="Flurl" Version="3.0.7" />
+	  <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
+	  <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="7.0.0" />
+	  <PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0" />
+	  <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+	  <PackageReference Include="System.Net.Http" Version="4.3.4" />
+	</ItemGroup>
+</Project>
