@@ -17,6 +17,7 @@
 
 using System;
 using System.Collections.Generic;
+
 using static Arad.SMS.Core.DotNetSDK.Helpers.Enums;
 
 namespace Arad.SMS.Core.DotNetSDK.Models

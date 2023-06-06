@@ -22,7 +22,9 @@ namespace Arad.SMS.Core.DotNetSDK.Models
     public class TokenResponseModel
     {
         public string access_token { get; set; }
+
         public DateTime expires_at { get; set; }
+
         public string scope { get; set; }
     }
 }

@@ -15,21 +15,28 @@
 //  limitations under the License.
 //  --------------------------------------------------------------------
 
-using Arad.SMS.Core.DotNetSDK.Models;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
+
+using Arad.SMS.Core.DotNetSDK.Models;
 
 namespace Arad.SMS.Core.DotNetSDK
 {
     public interface IMessage
     {
-        Task<string> GetToken(string Username, string Password, string Scop);
-        Task<HttpResponseMessage> Send(List<AradA2PMessage> aradA2PMessages, string Token);
-        Task<HttpResponseMessage> SendBulk(AradBulkMessage aradBulkMessage, string Token);
-        Task<List<DLRStatus>> GetDLR(List<string> Ids, string Token);
-        Task<List<Inbox>> GetMO(bool returnId, string Token);
-        Task<List<Inbox>> GetMOByDate(DateTime startDateTime, DateTime endDateTime, bool returnId, string Token);
+        Task<string> GetToken(string username, string password, string scope, CancellationToken cancellationToken);
+
+        Task<HttpResponseMessage> Send(List<AradA2PMessage> aradA2PMessages, string token, bool returnLongId, CancellationToken cancellationToken);
+
+        Task<HttpResponseMessage> SendBulk(AradBulkMessage aradBulkMessage, string token, bool returnLongId, CancellationToken cancellationToken);
+
+        Task<List<DLRStatus>> GetDLR(List<string> ids, string token, bool returnLongId, CancellationToken cancellationToken);
+
+        Task<List<Inbox>> GetMO(bool returnId, string token, CancellationToken cancellationToken);
+
+        Task<List<Inbox>> GetMOByDate(DateTime startDateTime, DateTime endDateTime, bool returnId, string token, CancellationToken cancellationToken);
     }
 }

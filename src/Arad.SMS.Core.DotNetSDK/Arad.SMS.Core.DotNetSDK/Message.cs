@@ -17,45 +17,43 @@
 
 using System;
 using System.Collections.Generic;
-using System.Net.Mime;
 using System.Net;
-using System.Text;
 using System.Net.Http;
-using Arad.SMS.Core.DotNetSDK.Models;
+using System.Net.Mime;
+using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+
+using Arad.SMS.Core.DotNetSDK.Models;
+
+using Flurl;
+
 using Newtonsoft.Json;
 
 namespace Arad.SMS.Core.DotNetSDK
 {
     public class Message : IMessage
     {
-        private HttpClient httpClient = new HttpClient();
-        private const string _apiBaseAddress = "https://api.aradvas.ir/";
-        public Message() {
+        private readonly string _apiBaseAddress;
+        private readonly HttpClient _httpClient = new();
 
-            httpClient.BaseAddress = new Uri(_apiBaseAddress);
+        public Message(string apiBaseAddress)
+        {
+            _apiBaseAddress = apiBaseAddress;
+            _httpClient.BaseAddress = new(_apiBaseAddress);
         }
 
-        public async Task<string> GetToken(string Username, string Password, string Scop)
+        public async Task<string> GetToken(string username, string password, string scope, CancellationToken cancellationToken)
         {
             try
             {
-                List<KeyValuePair<string, string>> keyValues = new List<KeyValuePair<string, string>>()
-                                                               {
-                                                                   new KeyValuePair<string, string>("username", Username),
-                                                                   new KeyValuePair<string, string>("password", Password),
-                                                                   new KeyValuePair < string, string >("scope", Scop)
-                                                               };
-                FormUrlEncodedContent formUrlEncodedContent = new FormUrlEncodedContent(keyValues);
-                HttpResponseMessage responseMessage = await httpClient.PostAsync("/connect/token", formUrlEncodedContent);
+                List<KeyValuePair<string, string>> keyValues = new() { new("username", username), new("password", password), new("scope", scope) };
+                FormUrlEncodedContent formUrlEncodedContent = new(keyValues);
+                HttpResponseMessage responseMessage = await _httpClient.PostAsync("/connect/token", formUrlEncodedContent, cancellationToken);
 
-                TokenResponseModel data = JsonConvert.DeserializeObject<TokenResponseModel>(await responseMessage.Content.ReadAsStringAsync());
-                if (responseMessage.StatusCode == HttpStatusCode.OK)
-                {
-                    return data?.access_token;
-                }
+                TokenResponseModel data = JsonConvert.DeserializeObject<TokenResponseModel>(await responseMessage.Content.ReadAsStringAsync(cancellationToken));
 
-                return null;
+                return responseMessage.StatusCode == HttpStatusCode.OK ? data?.access_token : null;
             }
             catch
             {
@@ -63,69 +61,71 @@ namespace Arad.SMS.Core.DotNetSDK
             }
         }
 
-        public async Task<HttpResponseMessage> Send(List<AradA2PMessage> aradA2PMessages, string Token)
+        public async Task<HttpResponseMessage> Send(List<AradA2PMessage> aradA2PMessages, string token, bool returnLongId, CancellationToken cancellationToken)
         {
-            return await GetResult(JsonConvert.SerializeObject(aradA2PMessages), "api/message/send/", Token);
-        }
-    
-        public async Task<HttpResponseMessage> SendBulk(AradBulkMessage aradBulkMessage, string Token)
-        {
-            return await GetResult(JsonConvert.SerializeObject(aradBulkMessage), "api/message/bulk/", Token);
+            return await GetResult(JsonConvert.SerializeObject(aradA2PMessages), $"api/message/send/{(returnLongId ? "?returnLongId=true" : "")}", token, cancellationToken);
         }
 
-        public async Task<List<DLRStatus>> GetDLR(List<string> Ids, string Token)
+        public async Task<HttpResponseMessage> SendBulk(AradBulkMessage aradBulkMessage, string token, bool returnLongId, CancellationToken cancellationToken)
         {
-            HttpResponseMessage response = await GetResult(JsonConvert.SerializeObject(Ids), "api/message/GetDLR/", Token);
+            return await GetResult(JsonConvert.SerializeObject(aradBulkMessage), $"api/message/bulk/{(returnLongId ? "?returnLongId=true" : "")}", token, cancellationToken);
+        }
+
+        public async Task<List<DLRStatus>> GetDLR(List<string> ids, string token, bool returnLongId, CancellationToken cancellationToken)
+        {
+            HttpResponseMessage response = await GetResult(JsonConvert.SerializeObject(ids), $"api/message/GetDLR/{(returnLongId ? "?returnLongId=true" : "")}", token, cancellationToken);
+
             if (response.StatusCode == HttpStatusCode.OK)
             {
-                ResultApiClass<List<DLRStatus>> resultApi = JsonConvert.DeserializeObject<ResultApiClass<List<DLRStatus>>>(await response.Content.ReadAsStringAsync());
+                ResultApiClass<List<DLRStatus>> resultApi = JsonConvert.DeserializeObject<ResultApiClass<List<DLRStatus>>>(await response.Content.ReadAsStringAsync(cancellationToken));
+
                 return resultApi.Data;
             }
-            else
-            {
-                return new List<DLRStatus>();
-            }
+
+            return new();
         }
 
-        public async Task<List<Inbox>> GetMO(bool returnId, string Token)
+        public async Task<List<Inbox>> GetMO(bool returnId, string token, CancellationToken cancellationToken)
         {
-            HttpResponseMessage response = await GetResult(returnId ? "api/message/GetMO?returnId=true" : "api/message/GetMO/", Token);
+            HttpResponseMessage response = await GetResult($"api/message/GetMO/{(returnId ? "?returnId=true" : "")}", token, cancellationToken);
+
             if (response.StatusCode == HttpStatusCode.OK)
             {
-                ResultApiClass<List<Inbox>> resultApi = JsonConvert.DeserializeObject<ResultApiClass<List<Inbox>>>(await response.Content.ReadAsStringAsync());
+                ResultApiClass<List<Inbox>> resultApi = JsonConvert.DeserializeObject<ResultApiClass<List<Inbox>>>(await response.Content.ReadAsStringAsync(cancellationToken));
+
                 return resultApi.Data;
             }
-            else
-            {
-                return new List<Inbox>();
-            }
+
+            return new();
         }
 
-        public async Task<List<Inbox>> GetMOByDate(DateTime startDateTime, DateTime endDateTime, bool returnId, string Token)
+        public async Task<List<Inbox>> GetMOByDate(DateTime startDateTime, DateTime endDateTime, bool returnId, string token, CancellationToken cancellationToken)
         {
-            HttpResponseMessage response = await GetResult(returnId ? $"api/message/GetMOByDate?startDateTime={startDateTime}&endDateTime={endDateTime}&returnId={returnId}" : $"api/message/GetMOByDate?startDateTime={startDateTime}&endDateTime={endDateTime}", Token);
+            HttpResponseMessage response = await GetResult($"api/message/GetMOByDate?startDateTime={startDateTime}&endDateTime={endDateTime}{(returnId ? "&returnId=true" : "")}", token, cancellationToken);
+
             if (response.StatusCode == HttpStatusCode.OK)
             {
-                ResultApiClass<List<Inbox>> resultApi = JsonConvert.DeserializeObject<ResultApiClass<List<Inbox>>>(await response.Content.ReadAsStringAsync());
+                ResultApiClass<List<Inbox>> resultApi = JsonConvert.DeserializeObject<ResultApiClass<List<Inbox>>>(await response.Content.ReadAsStringAsync(cancellationToken));
+
                 return resultApi.Data;
             }
-            else
-            {
-                return new List<Inbox>();
-            }
+
+            return new();
         }
 
-        private async Task<HttpResponseMessage> GetResult(string Content, string Url, string Token)
+        private async Task<HttpResponseMessage> GetResult(string content, string url, string token, CancellationToken cancellationToken)
         {
-            httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + Token);
-            StringContent content = new StringContent(Content, Encoding.UTF8, MediaTypeNames.Application.Json);
-            return await httpClient.PostAsync(Flurl.Url.Combine(_apiBaseAddress, Url), content);
+            _httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
+            StringContent stringContent = new(content, Encoding.UTF8, MediaTypeNames.Application.Json);
+
+            return await _httpClient.PostAsync(Url.Combine(_apiBaseAddress, url), stringContent, cancellationToken);
         }
 
-        private async Task<HttpResponseMessage> GetResult(string Url, string Token)
+        private async Task<HttpResponseMessage> GetResult(string url, string token, CancellationToken cancellationToken)
         {
-            httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + Token);
-            return await httpClient.GetAsync(Flurl.Url.Combine(_apiBaseAddress, Url));
+            _httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
+
+            return await _httpClient.GetAsync(Url.Combine(_apiBaseAddress, url), cancellationToken);
         }
     }
 }

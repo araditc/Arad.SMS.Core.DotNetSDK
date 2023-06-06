@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arad.SMS.Core.DotNetSDK", "Arad.SMS.Core.DotNetSDK\Arad.SMS.Core.DotNetSDK.csproj", "{BD333A64-BD17-4286-B05C-44EFBA5F8C3D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Arad.SMS.Core.DotNetSDK", "Arad.SMS.Core.DotNetSDK\Arad.SMS.Core.DotNetSDK.csproj", "{BD333A64-BD17-4286-B05C-44EFBA5F8C3D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sample", "Sample", "{DC845932-7099-41B0-937F-5E20EEA8201D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arad.SMS.Core.DotNetSDK.Sample", "..\..\sample\Arad.SMS.Core.DotNetSDK\Arad.SMS.Core.DotNetSDK.Sample\Arad.SMS.Core.DotNetSDK.Sample.csproj", "{C023DFF2-18E6-4A96-8DEC-EDA67F04C9DB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +19,16 @@ Global
 		{BD333A64-BD17-4286-B05C-44EFBA5F8C3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BD333A64-BD17-4286-B05C-44EFBA5F8C3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BD333A64-BD17-4286-B05C-44EFBA5F8C3D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C023DFF2-18E6-4A96-8DEC-EDA67F04C9DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C023DFF2-18E6-4A96-8DEC-EDA67F04C9DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C023DFF2-18E6-4A96-8DEC-EDA67F04C9DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C023DFF2-18E6-4A96-8DEC-EDA67F04C9DB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C023DFF2-18E6-4A96-8DEC-EDA67F04C9DB} = {DC845932-7099-41B0-937F-5E20EEA8201D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6081906B-8C45-411B-8A3E-E9C3EF52CF9F}
