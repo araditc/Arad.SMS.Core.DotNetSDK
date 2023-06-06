@@ -1,6 +1,8 @@
 # Arad.SMS.Core.DotNetSDK
 Dotnet SDK for Arad SMS Core API
 
+### NuGet 
+You can download this package from [NuGet](https://www.nuget.org/packages/Arad.SMS.Core.DotNetSDK/)
 
 ``` C#
    public class Program
