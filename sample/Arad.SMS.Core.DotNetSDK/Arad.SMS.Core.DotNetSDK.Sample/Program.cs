@@ -20,7 +20,7 @@ namespace Arad.SMS.Core.DotNetSDK.Sample
         {
             Console.WriteLine("Hello Arad!");
             _aradMessage = new Message("https://api.aradvas.ir");
-            
+
             await SendAradA2PMessage();
         }
 
@@ -31,8 +31,8 @@ namespace Arad.SMS.Core.DotNetSDK.Sample
 
         private static async ValueTask SendAradA2PMessage()
         {
-            List<AradA2PMessage> list = new() { new() { DestinationAddress = "989123456789", SourceAddress = "9890001234", MessageText = "Hello Arad!", DataCoding = Enums.DataCodings.Default } };
-            
+            List<AradA2PMessage> list = new List<AradA2PMessage>() { new AradA2PMessage() { DestinationAddress = "989123456789", SourceAddress = "9890001234", MessageText = "Hello Arad!", DataCoding = Enums.DataCodings.Default } };
+
             HttpResponseMessage response = await _aradMessage.Send(list, await GetToken(), false, CancellationToken.None);
 
             if (response.StatusCode == HttpStatusCode.OK)
@@ -44,7 +44,7 @@ namespace Arad.SMS.Core.DotNetSDK.Sample
 
         private static async ValueTask SendAradBulkMessage()
         {
-            AradBulkMessage list = new() { DestinationAddress = { "989123456789", "989129876543" }, SourceAddress = "9890001234", MessageText = "Hello Arad!" };
+            AradBulkMessage list = new AradBulkMessage() { DestinationAddress = { "989123456789", "989129876543" }, SourceAddress = "9890001234", MessageText = "Hello Arad!" };
             HttpResponseMessage response = await _aradMessage.SendBulk(list, await GetToken(), false, CancellationToken.None);
 
             if (response.StatusCode == HttpStatusCode.OK)
@@ -56,7 +56,7 @@ namespace Arad.SMS.Core.DotNetSDK.Sample
 
         private static async ValueTask GetDelivery()
         {
-            List<string> messageIds = new() { "64587abc831e4ec10a883dcd", "64587abc831e4ec10a883hgf" };
+            List<string> messageIds = new List<string>() { "64587abc831e4ec10a883dcd", "64587abc831e4ec10a883hgf" };
             List<DLRStatus> response = await _aradMessage.GetDLR(messageIds, await GetToken(), false, CancellationToken.None);
             Console.Write(JsonConvert.SerializeObject(response));
         }

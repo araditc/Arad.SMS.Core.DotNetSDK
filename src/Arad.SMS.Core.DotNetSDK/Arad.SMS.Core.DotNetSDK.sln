@@ -7,7 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Arad.SMS.Core.DotNetSDK", "
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sample", "Sample", "{DC845932-7099-41B0-937F-5E20EEA8201D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arad.SMS.Core.DotNetSDK.Sample", "..\..\sample\Arad.SMS.Core.DotNetSDK\Arad.SMS.Core.DotNetSDK.Sample\Arad.SMS.Core.DotNetSDK.Sample.csproj", "{C023DFF2-18E6-4A96-8DEC-EDA67F04C9DB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Arad.SMS.Core.DotNetSDK.Sample", "..\..\sample\Arad.SMS.Core.DotNetSDK\Arad.SMS.Core.DotNetSDK.Sample\Arad.SMS.Core.DotNetSDK.Sample.csproj", "{C023DFF2-18E6-4A96-8DEC-EDA67F04C9DB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Arad.SMS.Core.DotNetLib", "..\Arad.SMS.Core.DotNetLib\Arad.SMS.Core.DotNetLib.csproj", "{93413D5C-23AB-45EC-8383-8C93E6AAD381}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,6 +25,10 @@ Global
 		{C023DFF2-18E6-4A96-8DEC-EDA67F04C9DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C023DFF2-18E6-4A96-8DEC-EDA67F04C9DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C023DFF2-18E6-4A96-8DEC-EDA67F04C9DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93413D5C-23AB-45EC-8383-8C93E6AAD381}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93413D5C-23AB-45EC-8383-8C93E6AAD381}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93413D5C-23AB-45EC-8383-8C93E6AAD381}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93413D5C-23AB-45EC-8383-8C93E6AAD381}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
